@@ -1,12 +1,12 @@
 {
-  "name": "expose-loader",
+  "name": "expose-loader (forked)",
   "version": "0.7.3",
   "author": "Tobias Koppers @sokra",
   "description": "expose loader module for webpack",
   "dependencies": {},
   "repository": {
     "type": "git",
-    "url": "git@github.com:webpack/expose-loader.git"
+    "url": "git@github.com:wix-private/expose-loader.git"
   },
   "licenses": [
     {

@@ -17,8 +17,7 @@ function accesorString(value) {
 		propertyString += "[" + JSON.stringify(childProperties[i]) + "]";
 	}
 
-	result += "module.exports = " + propertyString;
-	return result;
+	return {result: result, propertyString: propertyString};
 }
 
 module.exports = function() {};
@@ -32,6 +31,6 @@ module.exports.pitch = function(remainingRequest) {
 	);
 	this.cacheable && this.cacheable();
 	if(!this.query) throw new Error("query parameter is missing");
-	return accesorString(this.query.substr(1)) + " = " +
-		"require(" + JSON.stringify("-!" + newRequestPath) + ");";
+	return accesorString(this.query.substr(1)).result += "module.exports = " + accesorString(this.query.substr(1)).propertyString + " = Object.assign ? Object.assign(" +
+		accesorString(this.query.substr(1)).propertyString + " || {}, require(" + JSON.stringify("-!" + newRequestPath) + ")) : {};";
 };
