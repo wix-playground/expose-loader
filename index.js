@@ -1,23 +1,24 @@
 /*
-	MIT License http://www.opensource.org/licenses/mit-license.php
-	Author Tobias Koppers @sokra
-*/
-
+ MIT License http://www.opensource.org/licenses/mit-license.php
+ Author Tobias Koppers @sokra
+ */
+//good screen shot - works on browser
 var path = require('path');
 
 function accesorString(value) {
 	var childProperties = value.split(".");
 	var length = childProperties.length;
 	var propertyString = "global";
-	var result = "";
+	var preString = "";
 
-	for(var i = 0; i < length; i++) {
+	for(var i = 0; i <= length; i++) {
 		if(i > 0)
-			result += "if(!" + propertyString + ") " + propertyString + " = {};\n";
-		propertyString += "[" + JSON.stringify(childProperties[i]) + "]";
+			preString += "if(!" + propertyString + ") " + propertyString + " = {};\n";
+		if(i !== length)
+			propertyString += "[" + JSON.stringify(childProperties[i]) + "]";
 	}
 
-	return {result: result, propertyString: propertyString};
+	return {preString: preString, propertyString: propertyString};
 }
 
 module.exports = function() {};
@@ -31,6 +32,10 @@ module.exports.pitch = function(remainingRequest) {
 	);
 	this.cacheable && this.cacheable();
 	if(!this.query) throw new Error("query parameter is missing");
-	return accesorString(this.query.substr(1)).result += "module.exports = " + accesorString(this.query.substr(1)).propertyString + " = Object.assign ? Object.assign(" +
-		accesorString(this.query.substr(1)).propertyString + " || {}, require(" + JSON.stringify("-!" + newRequestPath) + ")) : {};";
+
+	var preString = accesorString(this.query.substr(1)).preString;
+	var propertyString = accesorString(this.query.substr(1)).propertyString;
+	var objString = JSON.stringify("-!" + newRequestPath);
+	return preString + "for (prop in require(" + objString + ")) {if (require(" + objString + ").hasOwnProperty(prop)) {"
+		+ propertyString + "[prop] = require(" + objString + ")[prop]}}; module.exports = " + propertyString;
 };
