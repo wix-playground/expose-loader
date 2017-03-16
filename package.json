@@ -1,6 +1,6 @@
 {
-  "name": "expose-loader (forked)",
-  "version": "0.7.3",
+  "name": "expose-loader",
+  "version": "",
   "author": "Tobias Koppers @sokra",
   "description": "expose loader module for webpack",
   "dependencies": {},
