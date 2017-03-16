@@ -2,7 +2,7 @@
  MIT License http://www.opensource.org/licenses/mit-license.php
  Author Tobias Koppers @sokra
  */
-//good screen shot - works on browser
+
 var path = require('path');
 
 function accesorString(value) {
